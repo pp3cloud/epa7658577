@@ -1,0 +1,53 @@
+{% extends parent_template|default:"nutr/base_nutr.html" %}
+{% load i18n %}
+
+{% block title %}
+{{ block.super }} 
+{% endblock %}
+
+{% block create_button %}
+      <!--<a href="{% url 'nutr_tag_create' %}" class="button button-primary"> Create New Country</a>-->
+{% endblock %}
+
+{% block nutr_content %}
+<head><title>Political Prisoners</title></head>
+  <table class="align-right-2nd-column">
+    {% for tag in tag_list %}
+      <tr>
+        <td><a href="{{ tag.get_absolute_url }}"><img height="30" width="48" src="http://res.cloudinary.com/hh9sjfv1s/image/upload/{{ tag.image }}"     alt="(missing photo)"></a></td>
+        <td><a href="{{ tag.get_absolute_url }}"> {% trans tag.name %}</a></td>
+        {% if tag.petition %}
+            <td><a href="{{ tag.petition }}"> Sign the Petition </a></td>
+        {% else %}
+            <td></td>
+        {% endif %}
+          {% if tag.poc_set.all %}
+            {% with total=tag.poc_set.count %}
+              <td> <div style="text-align:right"> {{ total }} </div> </td>
+              {% if total > 1 %}
+                <td> prisoners</td>
+              {% else %}
+                <td> prisoner</td>
+              {% endif %}
+            {% endwith %}
+          {% else %}
+            <td></td><td></td>
+          {% endif %}
+        <div id="addEventForm">
+        </div>
+      </tr>
+    {% empty %}
+      <li><em>There are currently no countries available.</em></li>
+    {% endfor %}
+  </table>
+{% endblock %}
+
+{% block content_footer %}
+{% endblock %}
+        <!--
+        <td><a href="{{ tag.get_update_url }}"> Edit</a></td>
+        <td><a href="{{ tag.get_delete_url }}"> Delete</a></td>
+        -->
+        <!--
+        <td align='right'> {{ tag.poc_set.count }}</td>
+        -->

@@ -1,0 +1,91 @@
+{% extends parent_template|default:"nutr/base_nutr.html" %}
+{% load staticfiles %}
+{% load static %}
+
+
+{% block title %}
+{% endblock %}
+
+{% block nutr_content %}
+<head><title>{{ poc.name }}</title></head>
+<article>
+
+<hr><h3>{{ poc.name }} (<a href="{{ poc.tag.get_absolute_url }}"> {{ poc.tag }}</a>)</h3>
+
+<br>
+<img src="{% static jpg_url %}"  height="300">
+
+<br>
+<section>
+  <!--
+  <p> <a href="{{ poc.get_newslink_create_url }}" class="button button-primary"> Add Article</a></p>
+  -->
+  <ul>
+    {% for newslink in poc.newslink_set.all %}
+      <li>
+        <a href="{{ newslink.link }}">
+          {{ newslink.title }}</a>
+          <!--
+          <ul class="inline">
+              <li> <a href="{{ newslink.get_update_url }}" class="button"> Edit Link</a></li>
+              <li> <a href="{{ newslink.get_delete_url }}" class="button"> Delete Link</a></li>
+          </ul>
+          -->
+      </li>
+   {% endfor %}
+  </ul>
+</section>
+
+
+<br><a href="{{ poc.get_update_url }}"> Edit</a>
+<br><a href="{{ poc.get_delete_url }}"> Delete</a>
+{{ poc.description|linebreaks }}
+<br> Arrest Date: {{ poc.arrested_date }} 
+<br> Charge: {{ poc.charge }} 
+<br> Trial Date: {{ poc.trial_date }} 
+<br> Judge/Court/Prosecutor: {{ poc.judge }} 
+<br> Released Date: {{ poc.released_date }} 
+<br> Status: {{ poc.get_status_display }}
+<br>
+{% if poc.amnesty == True %}
+  Amnesty International has designated {{ poc.name }} a Prisoner of Conscience.
+{% else %}
+  As far as we know, Amnesty International has not designated {{ poc.name }} a Prisoner of Conscience.
+{% endif %}
+<br>
+{% if poc.hrw == True %}
+  Human Rights Watch has protested the imprisonment of {{ poc.name }}.
+{% else %}
+  As far as we know, Human Rights Watch has not protested the imprisonment of {{ poc.name }}.
+{% endif %}
+<br> Age When Arrested: {{ poc.age_arrested }} 
+<br> Sex: {{ poc.sex }} 
+<br> Location Born: {{ poc.location_born }} 
+<br> Location Arrested: {{ poc.location_arrested }} 
+<br> Location Held: {{ poc.location_held }} 
+<br> Updated Date: {{ poc.updated_date }} 
+<br> Updated By: {{ poc.modified_by_id }} 
+
+<br>
+{{ poc.pk }} 
+<br>
+<a href="{{ poc.link }}"> {{ poc.link }} </a>
+<br>
+{# if poc.blog_posts.all #}
+    <section>
+      <a href="{% url 'blog_post_create' %}" class="button button-primary"> Write New Blog Post</a>
+      <ul>
+        {% for post in poc.blog_posts.all %}
+          <li>
+            <a href="{{ post.get_absolute_url }}">
+              {{ post.title|title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+{# endif #}
+
+
+
+</article>
+{% endblock %}
